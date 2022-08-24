@@ -24,7 +24,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint './**/*.{ts,js,tsx,jsx}'"
+    "lint": "eslint './**/*.{ts,js,tsx,jsx}'",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
@@ -48,6 +49,7 @@
   "devDependencies": {
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.1",
     "prettier": "^2.7.1"
   }
 }
