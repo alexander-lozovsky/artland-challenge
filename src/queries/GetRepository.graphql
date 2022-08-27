@@ -1,0 +1,29 @@
+query GetRepository($name: String!, $owner: String!, $first: Int!, $issueCursor: String) {
+    repository(name: $name, owner: $owner) {
+        name
+        stargazerCount
+        watchers {
+            totalCount
+        }
+        issues(
+            first: $first
+            after: $issueCursor
+            filterBy: { states: OPEN }
+            orderBy: { field: CREATED_AT, direction: DESC }
+        ) {
+            nodes {
+                title
+                number
+                createdAt
+                author {
+                    login
+                }
+            }
+            pageInfo {
+                endCursor
+                hasNextPage
+            }
+            totalCount
+        }
+    }
+}

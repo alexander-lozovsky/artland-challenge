@@ -1,44 +1,12 @@
 import { FC } from 'react';
 import { useParams } from 'react-router-dom';
-import { useQuery, gql } from '@apollo/client';
 import Searchbox from './Searchbox';
-
-const GET_REPOSITORY = gql`
-    query GetRepository($name: String!, $owner: String!, $length: Int!, $issueCursor: String) {
-        repository(name: $name, owner: $owner) {
-            name
-            stargazerCount
-            watchers {
-                totalCount
-            }
-            issues(
-                first: $length
-                after: $issueCursor
-                filterBy: { states: OPEN }
-                orderBy: { field: CREATED_AT, direction: DESC }
-            ) {
-                nodes {
-                    title
-                    number
-                    createdAt
-                    author {
-                        login
-                    }
-                }
-                pageInfo {
-                    endCursor
-                    hasNextPage
-                }
-                totalCount
-            }
-        }
-    }
-`;
+import { useGetRepositoryQuery } from '../@generated/graphql';
 
 const RepositoryPage: FC = () => {
     const { userId, repositoryName } = useParams();
-    const { data, loading, error } = useQuery(GET_REPOSITORY, {
-        variables: { name: repositoryName, owner: userId, length: 10 },
+    const { data, loading, error } = useGetRepositoryQuery({
+        variables: { name: repositoryName, owner: userId, first: 10 },
     });
 
     if (loading) {
@@ -48,14 +16,13 @@ const RepositoryPage: FC = () => {
     if (error) {
         return <div>Cannot retrieve repository</div>;
     }
-    console.log(data);
 
     const {
         name,
         issues,
         stargazerCount,
         watchers: { totalCount },
-    } = data.repository as any;
+    } = data.repository;
     return (
         <div>
             <Searchbox />
@@ -67,7 +34,7 @@ const RepositoryPage: FC = () => {
                 <h2>Open issues</h2>
                 <button type="button">Create issue</button>
                 <ul>
-                    {issues.nodes.map((it: any) => {
+                    {issues.nodes.map((it) => {
                         return (
                             <li key={it.title}>
                                 <h3>{it.title}</h3>
