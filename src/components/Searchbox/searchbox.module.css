@@ -1,0 +1,27 @@
+.container {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.form {
+    display: flex;
+    margin: 0 auto;
+    width: fit-content;
+}
+
+.input {
+    width: 400px;
+    padding: 10px;
+    font-size: 20px;
+    line-height: 30px;
+}
+
+.searchBtn {
+    padding: 0 30px;
+    font-size: 20px;
+    line-height: 30px;
+    background: #3780f1;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}

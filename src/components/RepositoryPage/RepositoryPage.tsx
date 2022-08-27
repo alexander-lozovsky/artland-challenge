@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { useParams } from 'react-router-dom';
-import Searchbox from './Searchbox';
-import { useGetRepositoryQuery } from '../@generated/graphql';
+import Searchbox from '../Searchbox';
+import { useGetRepositoryQuery } from '../../@generated/graphql';
 
 const RepositoryPage: FC = () => {
     const { userId, repositoryName } = useParams();
