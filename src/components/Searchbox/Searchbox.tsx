@@ -9,7 +9,7 @@ const Searchbox = () => {
     const navigate = useNavigate();
 
     return (
-        <div className={styles.container}>
+        <div>
             <form
                 onSubmit={(e) => {
                     e.preventDefault();

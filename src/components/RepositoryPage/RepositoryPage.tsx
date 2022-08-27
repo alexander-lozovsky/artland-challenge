@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { useParams } from 'react-router-dom';
 import Searchbox from '../Searchbox';
 import { useGetRepositoryQuery } from '../../@generated/graphql';
+import styles from './repositoryPage.module.css';
 
 const RepositoryPage: FC = () => {
     const { userId, repositoryName } = useParams();
@@ -24,22 +25,34 @@ const RepositoryPage: FC = () => {
         watchers: { totalCount },
     } = data.repository;
     return (
-        <div>
+        <div className={styles.wrapper}>
             <Searchbox />
-            <h1>{name}</h1>
-            <span>
-                {stargazerCount} stars • {totalCount} watching
-            </span>
-            <div>
-                <h2>Open issues</h2>
-                <button type="button">Create issue</button>
-                <ul>
+            <div className={styles.nameWrapper}>
+                <h1 className={styles.name}>{name}</h1>
+                <span className={styles.stats}>
+                    {stargazerCount} Stars • {totalCount} Watching
+                </span>
+            </div>
+            <div className={styles.issuesWrapper}>
+                <div className={styles.issuesTitleWrapper}>
+                    <h2 className={styles.issuesTitle}>Open issues</h2>
+                    <button type="button" className={styles.createIssueBtn}>
+                        Create issue
+                    </button>
+                </div>
+
+                <ul className={styles.issuesList}>
                     {issues.nodes.map((it) => {
+                        const createdAt = new Date(it.createdAt).getTime();
+                        const now = Date.now();
+
+                        const diffDays = Math.ceil((now - createdAt) / (1000 * 60 * 60 * 24));
+
                         return (
-                            <li key={it.title}>
-                                <h3>{it.title}</h3>
-                                <span>
-                                    # {it.number} opened by {it.author.login}
+                            <li key={it.title} className={styles.issue}>
+                                <h3 className={styles.issueTitle}>{it.title}</h3>
+                                <span className={styles.openedBy}>
+                                    #{it.number} opened {diffDays} days ago by {it.author.login}
                                 </span>
                             </li>
                         );
