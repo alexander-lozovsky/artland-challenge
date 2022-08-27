@@ -73,7 +73,7 @@ const Users: FC<IUsersProps> = ({ query }) => {
             )}
             {selectedUser && (
                 <div>
-                    <br />
+                    <hr />
                     <Repositories login={selectedUser} />
                 </div>
             )}

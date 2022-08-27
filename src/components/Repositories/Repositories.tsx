@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { useGetUserRepositoriesQuery } from '../../@generated/graphql';
+import styles from './repositories.module.css';
 
 interface IRepositoriesProps {
     login: string;
@@ -24,13 +25,14 @@ const Repositories: FC<IRepositoriesProps> = ({ login }) => {
             <h3>{login} repositories</h3>
             {items.length === 0 && <p>User has no repositories yet</p>}
             {items.length > 0 && (
-                <ul>
+                <ul className={styles.repositoriesList}>
                     {items.map((it) => (
-                        <li key={it.name}>
+                        <li key={it.name} className={styles.repository}>
                             <Link to={`users/${login}/repositories/${it.name}`}>
-                                <span>{it.name} - </span>
-                                <span>{it.stargazerCount} Stars • </span>
-                                <span>{it.watchers.totalCount} Watching</span>
+                                <span className={styles.repositoryName}>{it.name}</span>
+                                <span className={styles.repositoryStats}>
+                                    {it.stargazerCount} Stars • {it.watchers.totalCount} Watching
+                                </span>
                             </Link>
                         </li>
                     ))}
