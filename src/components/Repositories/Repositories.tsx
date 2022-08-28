@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
-import { useGetUserRepositoriesQuery } from '../../@generated/graphql';
+import { useGetUserRepositoriesQuery } from '../../graphQL/generated-types';
 import Loader from '../Loader';
 import styles from './repositories.module.css';
 

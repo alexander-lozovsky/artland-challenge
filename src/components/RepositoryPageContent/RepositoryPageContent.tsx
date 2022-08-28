@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 import CreateIssueModal from '../CreateIssueModal';
-import { useGetRepositoryQuery, useCreateIssueMutation, GetRepositoryDocument } from '../../@generated/graphql';
+import { useGetRepositoryQuery, useCreateIssueMutation, GetRepositoryDocument } from '../../graphQL/generated-types';
 import styles from './repositoryPageContent.module.css';
 import Loader from '../Loader';
 

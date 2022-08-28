@@ -1,8 +1,10 @@
 overwrite: true
-schema: ./src/schema.docs.graphql
-documents: "./src/queries/**/*"
+schema: ./src/graphQL/githubApiSchema.docs.graphql
+documents: 
+  - ./src/graphQL/queries
+  - ./src/graphQL/mutations
 generates:
-  src/@generated/graphql.tsx:
+  ./src/graphQL/generated-types.ts:
     plugins:
       - "typescript"
       - "typescript-operations"

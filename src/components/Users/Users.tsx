@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Repositories from '../Repositories';
-import { useGetUsersQuery } from '../../@generated/graphql';
+import { useGetUsersQuery } from '../../graphQL/generated-types';
 import styles from './users.module.css';
 import cn from 'classnames';
 import Loader from '../Loader';
