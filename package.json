@@ -26,6 +26,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint './**/*.{ts,js,tsx,jsx}'",
+    "check:types": "tsc",
     "prepare": "husky install",
     "generate:graphql": "graphql-codegen --config codegen.yml"
   },
