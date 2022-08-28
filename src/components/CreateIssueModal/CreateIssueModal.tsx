@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, FormEvent, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import cn from 'classnames';
 import styles from './createIssueModal.module.css';
@@ -15,26 +15,21 @@ interface ICreateIssueModalProps {
 }
 
 const CreateIssueModal: FC<ICreateIssueModalProps> = ({ onClose, onCreate, isSubmitting }) => {
-    const modalRoot = document.getElementById('modal-root');
+    const modalRoot = useMemo(() => document.getElementById('modal-root'), []);
+
+    const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const formData = new FormData(e.target as HTMLFormElement);
+        const data = Object.fromEntries(formData.entries()) as unknown as CreateIssuePayload;
+
+        onCreate(data);
+    };
 
     const modal = (
-        <div
-            className={styles.overlay}
-            onClick={() => {
-                onClose();
-            }}
-        >
+        <div className={styles.overlay} onClick={onClose}>
             <div className={styles.content} onClick={(e) => e.stopPropagation()}>
                 <h1>Create New Issue</h1>
-                <form
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        const formData = new FormData(e.target as HTMLFormElement);
-                        const data = Object.fromEntries(formData.entries()) as unknown as CreateIssuePayload;
-
-                        onCreate(data);
-                    }}
-                >
+                <form onSubmit={onFormSubmit}>
                     <input className={styles.titleInput} type="text" name="title" placeholder="Title" required />
                     <textarea
                         className={styles.descriptionInput}

@@ -41,16 +41,18 @@ const Users: FC<IUsersProps> = ({ query }) => {
                                 case 'User': {
                                     const { login, name, repositories, starredRepositories } = node;
 
+                                    const onUserSelect = () => {
+                                        setSearchParams({
+                                            ...Object.fromEntries(searchParams.entries()),
+                                            selectedUser: login,
+                                        });
+                                    };
+
                                     return (
                                         <li key={login} className={styles.userCard}>
                                             <button
                                                 type="button"
-                                                onClick={() => {
-                                                    setSearchParams({
-                                                        ...Object.fromEntries(searchParams.entries()),
-                                                        selectedUser: login,
-                                                    });
-                                                }}
+                                                onClick={onUserSelect}
                                                 className={cn(styles.userCardButton, {
                                                     [styles.active]: selectedUser === login,
                                                 })}

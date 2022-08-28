@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import styles from './searchbox.module.css';
 
@@ -8,20 +8,20 @@ const Searchbox = () => {
     const [searchQuery, setSearchQuery] = useState(initialQuery);
     const navigate = useNavigate();
 
+    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        navigate(`/?query=${searchQuery}`);
+    };
+    const onChange = (e: ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value);
+
     return (
         <div>
-            <form
-                onSubmit={(e) => {
-                    e.preventDefault();
-                    navigate(`/?query=${searchQuery}`);
-                }}
-                className={styles.form}
-            >
+            <form onSubmit={onSubmit} className={styles.form}>
                 <input
                     type="search"
                     placeholder="Search users..."
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={onChange}
                     className={styles.input}
                 />
                 <button type="submit" className={styles.searchBtn}>
