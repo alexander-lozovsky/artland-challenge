@@ -9,12 +9,15 @@ interface IRepositoriesProps {
 }
 
 const Repositories: FC<IRepositoriesProps> = ({ login }) => {
+    // TODO add pagination
+    // TODO sometimes it receives repos that have already been deleted. Figure out how to filter them
     const { data, loading, error } = useGetUserRepositoriesQuery({ variables: { login, first: 10 } });
 
     if (loading) {
         return <Loader />;
     }
 
+    // TODO add styling
     if (error) {
         return <div>cannot retrieve repositories</div>;
     }
@@ -24,6 +27,7 @@ const Repositories: FC<IRepositoriesProps> = ({ login }) => {
     return (
         <div>
             <h3>{login} repositories</h3>
+            {/* TODO add styling */}
             {items.length === 0 && <p>User has no repositories yet</p>}
             {items.length > 0 && (
                 <ul className={styles.repositoriesList}>

@@ -9,6 +9,7 @@ import Loader from '../Loader';
 const RepositoryPageContent: FC = () => {
     const { userId, repositoryName } = useParams();
     const [isModalOpened, setIsModalOpened] = useState(false);
+    // TODO add pagination
     const { data, loading, error } = useGetRepositoryQuery({
         variables: { name: repositoryName, owner: userId, first: 10 },
     });
@@ -19,6 +20,7 @@ const RepositoryPageContent: FC = () => {
         return <Loader className={styles.loader} />;
     }
 
+    // TODO add styling
     if (error) {
         return <div>Cannot retrieve repository</div>;
     }
@@ -34,8 +36,10 @@ const RepositoryPageContent: FC = () => {
     const onModalOpen = () => setIsModalOpened(true);
     const onModalClose = () => setIsModalOpened(false);
 
+    // TODO remove any
     const onCreateIssue = async ({ title, description }: any) => {
         await createIssue({ variables: { input: { repositoryId: id, title, body: description } } });
+        // TODO show some message on success/failure
         onModalClose();
     };
 
@@ -59,6 +63,7 @@ const RepositoryPageContent: FC = () => {
 
                 <ul className={styles.issuesList}>
                     {issues.nodes.map((it) => {
+                        // TODO move to some helper function
                         const createdAt = new Date(it.createdAt).getTime();
                         const now = Date.now();
 

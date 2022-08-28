@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './components/App';
 import './index.css';
 
+// TODO check all the queries and remove unused data
 const client = new ApolloClient({
     uri: 'https://api.github.com/graphql',
     headers: {

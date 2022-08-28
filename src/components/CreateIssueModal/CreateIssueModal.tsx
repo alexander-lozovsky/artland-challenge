@@ -17,6 +17,7 @@ interface ICreateIssueModalProps {
 const CreateIssueModal: FC<ICreateIssueModalProps> = ({ onClose, onCreate, isSubmitting }) => {
     const modalRoot = useMemo(() => document.getElementById('modal-root'), []);
 
+    // TODO make unputs controllable and improve typing
     const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.target as HTMLFormElement);

@@ -11,6 +11,7 @@ interface IUsersProps {
 }
 
 const Users: FC<IUsersProps> = ({ query }) => {
+    // TODO add lazy-loading
     const { data, loading, error } = useGetUsersQuery({ variables: { query: `${query} type:user`, first: 20 } });
     const [searchParams, setSearchParams] = useSearchParams();
     const selectedUser = searchParams.get('selectedUser');
