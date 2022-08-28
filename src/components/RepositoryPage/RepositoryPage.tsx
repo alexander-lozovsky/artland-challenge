@@ -1,14 +1,19 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
+
 import { useParams } from 'react-router-dom';
 import Searchbox from '../Searchbox';
-import { useGetRepositoryQuery } from '../../@generated/graphql';
+import CreateIssueModal from '../CreateIssueModal';
+import { useGetRepositoryQuery, useCreateIssueMutation, GetRepositoryDocument } from '../../@generated/graphql';
 import styles from './repositoryPage.module.css';
 
 const RepositoryPage: FC = () => {
     const { userId, repositoryName } = useParams();
+    const [isModalOpened, setIsModalOpened] = useState(false);
     const { data, loading, error } = useGetRepositoryQuery({
         variables: { name: repositoryName, owner: userId, first: 10 },
     });
+
+    const [createIssue] = useCreateIssueMutation({ refetchQueries: [GetRepositoryDocument] });
 
     if (loading) {
         return <div>...loading</div>;
@@ -19,11 +24,21 @@ const RepositoryPage: FC = () => {
     }
 
     const {
+        id,
         name,
         issues,
         stargazerCount,
         watchers: { totalCount },
     } = data.repository;
+
+    const onModalOpen = () => setIsModalOpened(true);
+    const onModalClose = () => setIsModalOpened(false);
+
+    const onCreateIssue = async ({ title, description }: any) => {
+        await createIssue({ variables: { input: { repositoryId: id, title, body: description } } });
+        onModalClose();
+    };
+
     return (
         <div className={styles.wrapper}>
             <Searchbox />
@@ -36,7 +51,7 @@ const RepositoryPage: FC = () => {
             <div className={styles.issuesWrapper}>
                 <div className={styles.issuesTitleWrapper}>
                     <h2 className={styles.issuesTitle}>Open issues</h2>
-                    <button type="button" className={styles.createIssueBtn}>
+                    <button type="button" className={styles.createIssueBtn} onClick={onModalOpen}>
                         Create issue
                     </button>
                 </div>
@@ -58,6 +73,7 @@ const RepositoryPage: FC = () => {
                         );
                     })}
                 </ul>
+                {isModalOpened && <CreateIssueModal onClose={onModalClose} onCreate={onCreateIssue} />}
             </div>
         </div>
     );

@@ -1,0 +1,57 @@
+.overlay {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.content {
+    width: 600px;
+    background: #fff;
+    padding: 10px 30px;
+
+}
+
+.titleInput,
+.descriptionInput {
+    font-family: inherit;
+    display: block;
+    padding: 6px;
+    font-size: 16px;
+    line-height: 20px;
+    width: 100%;
+    box-sizing: border-box;
+
+}
+
+.descriptionInput {
+    margin-top: 20px;
+    resize: none;
+}
+
+.buttons {
+    margin-top: 50px;
+    text-align: right;
+}
+
+.button {
+    border: none;
+    font-size: 16px;
+    line-height: 20px;
+    padding: 10px 20px;
+    margin-left: 10px;
+    cursor: pointer;
+} 
+
+.cancelBtn {
+    background-color: rgb(236, 152, 152);
+}
+
+.createBtn {
+    background-color: rgb(18, 196, 18);
+}

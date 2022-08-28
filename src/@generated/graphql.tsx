@@ -26450,6 +26450,30 @@ export type WorkflowRunPendingDeploymentRequestsArgs = {
     last?: InputMaybe<Scalars['Int']>;
 };
 
+export type CreateIssueMutationVariables = Exact<{
+    input: CreateIssueInput;
+}>;
+
+export type CreateIssueMutation = {
+    __typename?: 'Mutation';
+    createIssue?: {
+        __typename?: 'CreateIssuePayload';
+        issue?: {
+            __typename?: 'Issue';
+            title: string;
+            number: number;
+            createdAt: any;
+            author?:
+                | { __typename?: 'Bot'; login: string }
+                | { __typename?: 'EnterpriseUserAccount'; login: string }
+                | { __typename?: 'Mannequin'; login: string }
+                | { __typename?: 'Organization'; login: string }
+                | { __typename?: 'User'; login: string }
+                | null;
+        } | null;
+    } | null;
+};
+
 export type GetRepositoryQueryVariables = Exact<{
     name: Scalars['String'];
     owner: Scalars['String'];
@@ -26461,6 +26485,7 @@ export type GetRepositoryQuery = {
     __typename?: 'Query';
     repository?: {
         __typename?: 'Repository';
+        id: string;
         name: string;
         stargazerCount: number;
         watchers: { __typename?: 'UserConnection'; totalCount: number };
@@ -26542,9 +26567,52 @@ export type GetUsersQuery = {
     };
 };
 
+export const CreateIssueDocument = gql`
+    mutation CreateIssue($input: CreateIssueInput!) {
+        createIssue(input: $input) {
+            issue {
+                title
+                number
+                createdAt
+                author {
+                    login
+                }
+            }
+        }
+    }
+`;
+export type CreateIssueMutationFn = Apollo.MutationFunction<CreateIssueMutation, CreateIssueMutationVariables>;
+
+/**
+ * __useCreateIssueMutation__
+ *
+ * To run a mutation, you first call `useCreateIssueMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateIssueMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createIssueMutation, { data, loading, error }] = useCreateIssueMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateIssueMutation(
+    baseOptions?: Apollo.MutationHookOptions<CreateIssueMutation, CreateIssueMutationVariables>
+) {
+    const options = { ...defaultOptions, ...baseOptions };
+    return Apollo.useMutation<CreateIssueMutation, CreateIssueMutationVariables>(CreateIssueDocument, options);
+}
+export type CreateIssueMutationHookResult = ReturnType<typeof useCreateIssueMutation>;
+export type CreateIssueMutationResult = Apollo.MutationResult<CreateIssueMutation>;
+export type CreateIssueMutationOptions = Apollo.BaseMutationOptions<CreateIssueMutation, CreateIssueMutationVariables>;
 export const GetRepositoryDocument = gql`
     query GetRepository($name: String!, $owner: String!, $first: Int!, $issueCursor: String) {
         repository(name: $name, owner: $owner) {
+            id
             name
             stargazerCount
             watchers {
