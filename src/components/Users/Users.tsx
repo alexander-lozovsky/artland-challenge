@@ -4,6 +4,7 @@ import Repositories from '../Repositories';
 import { useGetUsersQuery } from '../../@generated/graphql';
 import styles from './users.module.css';
 import cn from 'classnames';
+import Loader from '../Loader';
 
 interface IUsersProps {
     query: string;
@@ -15,7 +16,7 @@ const Users: FC<IUsersProps> = ({ query }) => {
     const selectedUser = searchParams.get('selectedUser');
 
     if (loading) {
-        return <div>...loading</div>;
+        return <Loader className={styles.loader} />;
     }
 
     if (error) {

@@ -11,9 +11,10 @@ interface CreateIssuePayload {
 interface ICreateIssueModalProps {
     onClose: () => void;
     onCreate: (payload: CreateIssuePayload) => void;
+    isSubmitting?: boolean;
 }
 
-const CreateIssueModal: FC<ICreateIssueModalProps> = ({ onClose, onCreate }) => {
+const CreateIssueModal: FC<ICreateIssueModalProps> = ({ onClose, onCreate, isSubmitting }) => {
     const modalRoot = document.getElementById('modal-root');
 
     const modal = (
@@ -45,7 +46,7 @@ const CreateIssueModal: FC<ICreateIssueModalProps> = ({ onClose, onCreate }) => 
                         <button type="button" className={cn(styles.button, styles.cancelBtn)} onClick={onClose}>
                             Cancel
                         </button>
-                        <button type="submit" className={cn(styles.button, styles.createBtn)}>
+                        <button type="submit" className={cn(styles.button, styles.createBtn)} disabled={isSubmitting}>
                             Create
                         </button>
                     </div>

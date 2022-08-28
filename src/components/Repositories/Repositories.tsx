@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { useGetUserRepositoriesQuery } from '../../@generated/graphql';
+import Loader from '../Loader';
 import styles from './repositories.module.css';
 
 interface IRepositoriesProps {
@@ -11,7 +12,7 @@ const Repositories: FC<IRepositoriesProps> = ({ login }) => {
     const { data, loading, error } = useGetUserRepositoriesQuery({ variables: { login, first: 10 } });
 
     if (loading) {
-        return <div>...loading</div>;
+        return <Loader />;
     }
 
     if (error) {
