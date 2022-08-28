@@ -1,0 +1,21 @@
+.wrapper {
+    position: absolute;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.title {
+    margin: 0;
+    font-size: 80px;
+    line-height: 100px;
+}
+
+.message {
+    margin: 0;
+    font-size: 40px;
+    line-height: 50px;
+}
