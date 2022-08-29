@@ -2,6 +2,11 @@
     height: 350px;
 }
 
+.errorMessage {
+    text-align: center;
+    color: red;
+}
+
 .nameWrapper {
     margin-top: 100px;
     display: flex;

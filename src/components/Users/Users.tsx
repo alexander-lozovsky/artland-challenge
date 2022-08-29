@@ -21,18 +21,15 @@ const Users: FC<IUsersProps> = ({ query }) => {
     }
 
     if (error) {
-        return <div>cannot retrieve users</div>;
+        return <p className={styles.errorMessage}>Cannot retrieve users, please try again</p>;
     }
 
     const usersNodes = data.search.nodes;
-    if (usersNodes.length === 0) {
-        return <p>We couldn't find any users</p>;
-    }
 
     return (
         <div className={styles.container}>
             <h2 className={styles.searchResultsTitle}>Results</h2>
-            {usersNodes.length === 0 && <p>We couldn't find any users</p>}
+            {usersNodes.length === 0 && <p className={styles.noResultsNessage}>We couldn't find any users</p>}
             {usersNodes.length > 0 && (
                 <div className={styles.usersListWrapper}>
                     <h3 className={styles.usersListTitle}>Users</h3>

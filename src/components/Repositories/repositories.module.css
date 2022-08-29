@@ -1,3 +1,7 @@
+.errorMessage {
+    color: red;
+}
+
 .repositoriesList {
     margin: 0;
     padding: 0;

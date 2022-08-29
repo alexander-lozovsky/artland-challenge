@@ -19,9 +19,8 @@ const RepositoryPageContent: FC = () => {
         return <Loader className={styles.loader} />;
     }
 
-    // TODO add styling
     if (error) {
-        return <div>Cannot retrieve repository</div>;
+        return <p className={styles.errorMessage}>Cannot retrieve repository</p>;
     }
 
     const {
@@ -37,8 +36,6 @@ const RepositoryPageContent: FC = () => {
 
     return (
         <div>
-            {loading && <Loader />}
-            {error && <p>Cannot retrieve repository</p>}
             <div className={styles.nameWrapper}>
                 <h1 className={styles.name}>{name}</h1>
                 <span className={styles.stats}>
@@ -53,22 +50,25 @@ const RepositoryPageContent: FC = () => {
                     </button>
                 </div>
 
-                <ul className={styles.issuesList}>
-                    {issues.nodes.map(({ id, title, createdAt, number, author: { login } }) => {
-                        const createdAtDate = new Date(createdAt);
-                        const daysFromNow = differenceInDays(new Date(), createdAtDate);
+                {issues.nodes.length === 0 && <p>No issues have been opened</p>}
+                {issues.nodes.length > 0 && (
+                    <ul className={styles.issuesList}>
+                        {issues.nodes.map(({ id, title, createdAt, number, author: { login } }) => {
+                            const createdAtDate = new Date(createdAt);
+                            const daysFromNow = differenceInDays(new Date(), createdAtDate);
 
-                        return (
-                            <li key={id} className={styles.issue}>
-                                <h3 className={styles.issueTitle}>{title}</h3>
-                                <span className={styles.openedBy}>
-                                    #{number} opened{' '}
-                                    <span title={createdAtDate.toString()}>{daysFromNow} days ago</span> by {login}
-                                </span>
-                            </li>
-                        );
-                    })}
-                </ul>
+                            return (
+                                <li key={id} className={styles.issue}>
+                                    <h3 className={styles.issueTitle}>{title}</h3>
+                                    <span className={styles.openedBy}>
+                                        #{number} opened{' '}
+                                        <span title={createdAtDate.toString()}>{daysFromNow} days ago</span> by {login}
+                                    </span>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                )}
                 {isModalOpened && <CreateIssueModal onClose={onModalClose} repositoryId={id} />}
             </div>
         </div>

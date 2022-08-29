@@ -7,6 +7,17 @@
     height: 300px;
 }
 
+.errorMessage {
+    text-align: center;
+    color: red
+}
+
+.noResultsNessage {
+    text-align: center;
+    font-size: 18px;
+    line-height: 24px;
+}
+
 .searchResultsTitle {
     text-align: center;
     color: rgb(148, 148, 148)

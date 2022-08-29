@@ -17,9 +17,8 @@ const Repositories: FC<IRepositoriesProps> = ({ login }) => {
         return <Loader />;
     }
 
-    // TODO add styling
     if (error) {
-        return <div>cannot retrieve repositories</div>;
+        return <div className={styles.errorMessage}>Cannot retrieve repositories</div>;
     }
 
     const items = data.user.repositories.nodes;
@@ -27,7 +26,6 @@ const Repositories: FC<IRepositoriesProps> = ({ login }) => {
     return (
         <div>
             <h3>{login} repositories</h3>
-            {/* TODO add styling */}
             {items.length === 0 && <p>User has no repositories yet</p>}
             {items.length > 0 && (
                 <ul className={styles.repositoriesList}>
