@@ -55,3 +55,7 @@
 .createBtn {
     background-color: rgb(18, 196, 18);
 }
+
+.errorMessage {
+    color: red;
+}

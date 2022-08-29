@@ -2,10 +2,9 @@ import { FC, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 import CreateIssueModal from '../CreateIssueModal';
-import { useGetRepositoryQuery, useCreateIssueMutation, GetRepositoryDocument } from '../../graphQL/generated-types';
+import { useGetRepositoryQuery } from '../../graphQL/generated-types';
 import styles from './repositoryPageContent.module.css';
 import Loader from '../Loader';
-import { ICreateIssuePayload } from '../../types';
 import { differenceInDays } from '../../utils';
 
 const RepositoryPageContent: FC = () => {
@@ -15,8 +14,6 @@ const RepositoryPageContent: FC = () => {
     const { data, loading, error } = useGetRepositoryQuery({
         variables: { name: repositoryName, owner: userId, first: 10 },
     });
-
-    const [createIssue, createIssueResults] = useCreateIssueMutation({ refetchQueries: [GetRepositoryDocument] });
 
     if (loading) {
         return <Loader className={styles.loader} />;
@@ -37,12 +34,6 @@ const RepositoryPageContent: FC = () => {
 
     const onModalOpen = () => setIsModalOpened(true);
     const onModalClose = () => setIsModalOpened(false);
-
-    const onCreateIssue = async ({ title, description }: ICreateIssuePayload) => {
-        await createIssue({ variables: { input: { repositoryId: id, title, body: description } } });
-        // TODO show some message on success/failure
-        onModalClose();
-    };
 
     return (
         <div>
@@ -78,13 +69,7 @@ const RepositoryPageContent: FC = () => {
                         );
                     })}
                 </ul>
-                {isModalOpened && (
-                    <CreateIssueModal
-                        onClose={onModalClose}
-                        onCreate={onCreateIssue}
-                        isSubmitting={createIssueResults.loading}
-                    />
-                )}
+                {isModalOpened && <CreateIssueModal onClose={onModalClose} repositoryId={id} />}
             </div>
         </div>
     );
