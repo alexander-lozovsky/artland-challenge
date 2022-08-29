@@ -32,7 +32,7 @@ const Repositories: FC<IRepositoriesProps> = ({ login }) => {
             {items.length > 0 && (
                 <ul className={styles.repositoriesList}>
                     {items.map((it) => (
-                        <li key={it.name} className={styles.repository}>
+                        <li key={it.id} className={styles.repository}>
                             <Link to={`users/${login}/repositories/${it.name}`}>
                                 <span className={styles.repositoryName}>{it.name}</span>
                                 <span className={styles.repositoryStats}>

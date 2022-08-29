@@ -1,16 +1,13 @@
-query GetUserRepositories($login: String!, $first: Int!, $repositoryCursor: String) {
+query GetUserRepositories($login: String!, $first: Int!) {
     user(login: $login) {
-        repositories(first: $first, after: $repositoryCursor) {
+        repositories(first: $first) {
             nodes {
+              	id
                 name
                 watchers {
                     totalCount
                 }
                 stargazerCount
-            }
-            pageInfo {
-                endCursor
-                hasNextPage
             }
         }
     }

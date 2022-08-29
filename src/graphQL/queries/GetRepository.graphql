@@ -1,4 +1,4 @@
-query GetRepository($name: String!, $owner: String!, $first: Int!, $issueCursor: String) {
+query GetRepository($name: String!, $owner: String!, $first: Int!) {
     repository(name: $name, owner: $owner) {
         id
         name
@@ -8,11 +8,11 @@ query GetRepository($name: String!, $owner: String!, $first: Int!, $issueCursor:
         }
         issues(
             first: $first
-            after: $issueCursor
             filterBy: { states: OPEN }
             orderBy: { field: CREATED_AT, direction: DESC }
         ) {
             nodes {
+              	id
                 title
                 number
                 createdAt
@@ -20,11 +20,6 @@ query GetRepository($name: String!, $owner: String!, $first: Int!, $issueCursor:
                     login
                 }
             }
-            pageInfo {
-                endCursor
-                hasNextPage
-            }
-            totalCount
         }
     }
 }

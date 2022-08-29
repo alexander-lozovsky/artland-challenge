@@ -26456,29 +26456,13 @@ export type CreateIssueMutationVariables = Exact<{
 
 export type CreateIssueMutation = {
     __typename?: 'Mutation';
-    createIssue?: {
-        __typename?: 'CreateIssuePayload';
-        issue?: {
-            __typename?: 'Issue';
-            title: string;
-            number: number;
-            createdAt: any;
-            author?:
-                | { __typename?: 'Bot'; login: string }
-                | { __typename?: 'EnterpriseUserAccount'; login: string }
-                | { __typename?: 'Mannequin'; login: string }
-                | { __typename?: 'Organization'; login: string }
-                | { __typename?: 'User'; login: string }
-                | null;
-        } | null;
-    } | null;
+    createIssue?: { __typename?: 'CreateIssuePayload'; issue?: { __typename?: 'Issue'; id: string } | null } | null;
 };
 
 export type GetRepositoryQueryVariables = Exact<{
     name: Scalars['String'];
     owner: Scalars['String'];
     first: Scalars['Int'];
-    issueCursor?: InputMaybe<Scalars['String']>;
 }>;
 
 export type GetRepositoryQuery = {
@@ -26491,9 +26475,9 @@ export type GetRepositoryQuery = {
         watchers: { __typename?: 'UserConnection'; totalCount: number };
         issues: {
             __typename?: 'IssueConnection';
-            totalCount: number;
             nodes?: Array<{
                 __typename?: 'Issue';
+                id: string;
                 title: string;
                 number: number;
                 createdAt: any;
@@ -26505,7 +26489,6 @@ export type GetRepositoryQuery = {
                     | { __typename?: 'User'; login: string }
                     | null;
             } | null> | null;
-            pageInfo: { __typename?: 'PageInfo'; endCursor?: string | null; hasNextPage: boolean };
         };
     } | null;
 };
@@ -26513,7 +26496,6 @@ export type GetRepositoryQuery = {
 export type GetUserRepositoriesQueryVariables = Exact<{
     login: Scalars['String'];
     first: Scalars['Int'];
-    repositoryCursor?: InputMaybe<Scalars['String']>;
 }>;
 
 export type GetUserRepositoriesQuery = {
@@ -26524,11 +26506,11 @@ export type GetUserRepositoriesQuery = {
             __typename?: 'RepositoryConnection';
             nodes?: Array<{
                 __typename?: 'Repository';
+                id: string;
                 name: string;
                 stargazerCount: number;
                 watchers: { __typename?: 'UserConnection'; totalCount: number };
             } | null> | null;
-            pageInfo: { __typename?: 'PageInfo'; endCursor?: string | null; hasNextPage: boolean };
         };
     } | null;
 };
@@ -26536,34 +26518,29 @@ export type GetUserRepositoriesQuery = {
 export type GetUsersQueryVariables = Exact<{
     query: Scalars['String'];
     first: Scalars['Int'];
-    userCursor?: InputMaybe<Scalars['String']>;
 }>;
 
 export type GetUsersQuery = {
     __typename?: 'Query';
     search: {
         __typename?: 'SearchResultItemConnection';
-        userCount: number;
-        edges?: Array<{
-            __typename?: 'SearchResultItemEdge';
-            node?:
-                | { __typename?: 'App' }
-                | { __typename?: 'Discussion' }
-                | { __typename?: 'Issue' }
-                | { __typename?: 'MarketplaceListing' }
-                | { __typename?: 'Organization' }
-                | { __typename?: 'PullRequest' }
-                | { __typename?: 'Repository' }
-                | {
-                      __typename?: 'User';
-                      name?: string | null;
-                      login: string;
-                      starredRepositories: { __typename?: 'StarredRepositoryConnection'; totalCount: number };
-                      repositories: { __typename?: 'RepositoryConnection'; totalCount: number };
-                  }
-                | null;
-        } | null> | null;
-        pageInfo: { __typename?: 'PageInfo'; endCursor?: string | null; hasNextPage: boolean };
+        nodes?: Array<
+            | { __typename?: 'App' }
+            | { __typename?: 'Discussion' }
+            | { __typename?: 'Issue' }
+            | { __typename?: 'MarketplaceListing' }
+            | { __typename?: 'Organization' }
+            | { __typename?: 'PullRequest' }
+            | { __typename?: 'Repository' }
+            | {
+                  __typename?: 'User';
+                  name?: string | null;
+                  login: string;
+                  starredRepositories: { __typename?: 'StarredRepositoryConnection'; totalCount: number };
+                  repositories: { __typename?: 'RepositoryConnection'; totalCount: number };
+              }
+            | null
+        > | null;
     };
 };
 
@@ -26571,12 +26548,7 @@ export const CreateIssueDocument = gql`
     mutation CreateIssue($input: CreateIssueInput!) {
         createIssue(input: $input) {
             issue {
-                title
-                number
-                createdAt
-                author {
-                    login
-                }
+                id
             }
         }
     }
@@ -26610,7 +26582,7 @@ export type CreateIssueMutationHookResult = ReturnType<typeof useCreateIssueMuta
 export type CreateIssueMutationResult = Apollo.MutationResult<CreateIssueMutation>;
 export type CreateIssueMutationOptions = Apollo.BaseMutationOptions<CreateIssueMutation, CreateIssueMutationVariables>;
 export const GetRepositoryDocument = gql`
-    query GetRepository($name: String!, $owner: String!, $first: Int!, $issueCursor: String) {
+    query GetRepository($name: String!, $owner: String!, $first: Int!) {
         repository(name: $name, owner: $owner) {
             id
             name
@@ -26618,13 +26590,9 @@ export const GetRepositoryDocument = gql`
             watchers {
                 totalCount
             }
-            issues(
-                first: $first
-                after: $issueCursor
-                filterBy: { states: OPEN }
-                orderBy: { field: CREATED_AT, direction: DESC }
-            ) {
+            issues(first: $first, filterBy: { states: OPEN }, orderBy: { field: CREATED_AT, direction: DESC }) {
                 nodes {
+                    id
                     title
                     number
                     createdAt
@@ -26632,11 +26600,6 @@ export const GetRepositoryDocument = gql`
                         login
                     }
                 }
-                pageInfo {
-                    endCursor
-                    hasNextPage
-                }
-                totalCount
             }
         }
     }
@@ -26657,7 +26620,6 @@ export const GetRepositoryDocument = gql`
  *      name: // value for 'name'
  *      owner: // value for 'owner'
  *      first: // value for 'first'
- *      issueCursor: // value for 'issueCursor'
  *   },
  * });
  */
@@ -26677,19 +26639,16 @@ export type GetRepositoryQueryHookResult = ReturnType<typeof useGetRepositoryQue
 export type GetRepositoryLazyQueryHookResult = ReturnType<typeof useGetRepositoryLazyQuery>;
 export type GetRepositoryQueryResult = Apollo.QueryResult<GetRepositoryQuery, GetRepositoryQueryVariables>;
 export const GetUserRepositoriesDocument = gql`
-    query GetUserRepositories($login: String!, $first: Int!, $repositoryCursor: String) {
+    query GetUserRepositories($login: String!, $first: Int!) {
         user(login: $login) {
-            repositories(first: $first, after: $repositoryCursor) {
+            repositories(first: $first) {
                 nodes {
+                    id
                     name
                     watchers {
                         totalCount
                     }
                     stargazerCount
-                }
-                pageInfo {
-                    endCursor
-                    hasNextPage
                 }
             }
         }
@@ -26710,7 +26669,6 @@ export const GetUserRepositoriesDocument = gql`
  *   variables: {
  *      login: // value for 'login'
  *      first: // value for 'first'
- *      repositoryCursor: // value for 'repositoryCursor'
  *   },
  * });
  */
@@ -26739,26 +26697,19 @@ export type GetUserRepositoriesQueryResult = Apollo.QueryResult<
     GetUserRepositoriesQueryVariables
 >;
 export const GetUsersDocument = gql`
-    query GetUsers($query: String!, $first: Int!, $userCursor: String) {
-        search(type: USER, query: $query, first: $first, after: $userCursor) {
-            edges {
-                node {
-                    ... on User {
-                        name
-                        login
-                        starredRepositories {
-                            totalCount
-                        }
-                        repositories {
-                            totalCount
-                        }
+    query GetUsers($query: String!, $first: Int!) {
+        search(type: USER, query: $query, first: $first) {
+            nodes {
+                ... on User {
+                    name
+                    login
+                    starredRepositories {
+                        totalCount
+                    }
+                    repositories {
+                        totalCount
                     }
                 }
-            }
-            userCount
-            pageInfo {
-                endCursor
-                hasNextPage
             }
         }
     }
@@ -26778,7 +26729,6 @@ export const GetUsersDocument = gql`
  *   variables: {
  *      query: // value for 'query'
  *      first: // value for 'first'
- *      userCursor: // value for 'userCursor'
  *   },
  * });
  */

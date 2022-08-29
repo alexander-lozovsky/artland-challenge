@@ -1,23 +1,16 @@
-query GetUsers($query: String!, $first: Int!, $userCursor: String) {
-    search(type: USER, query: $query, first: $first, after: $userCursor) {
-        edges {
-            node {
-                ... on User {
-                    name
-                    login
-                    starredRepositories {
-                        totalCount
-                    }
-                    repositories {
-                        totalCount
-                    }
-                }
-            }
+query GetUsers($query: String!, $first: Int!) {
+  search(type: USER, query: $query, first: $first) {
+    nodes {
+      ... on User {
+        name
+        login
+        starredRepositories {
+          totalCount
         }
-        userCount
-        pageInfo {
-            endCursor
-            hasNextPage
+        repositories {
+          totalCount
         }
+      }
     }
+  }
 }

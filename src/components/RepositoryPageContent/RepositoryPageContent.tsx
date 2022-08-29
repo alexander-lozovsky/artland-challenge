@@ -54,12 +54,12 @@ const RepositoryPageContent: FC = () => {
                 </div>
 
                 <ul className={styles.issuesList}>
-                    {issues.nodes.map(({ title, createdAt, number, author: { login } }) => {
+                    {issues.nodes.map(({ id, title, createdAt, number, author: { login } }) => {
                         const createdAtDate = new Date(createdAt);
                         const daysFromNow = differenceInDays(new Date(), createdAtDate);
 
                         return (
-                            <li key={title} className={styles.issue}>
+                            <li key={id} className={styles.issue}>
                                 <h3 className={styles.issueTitle}>{title}</h3>
                                 <span className={styles.openedBy}>
                                     #{number} opened{' '}

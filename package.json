@@ -25,7 +25,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint './**/*.{ts,js,tsx,jsx}'",
+    "lint": "eslint './src/**/*.{ts,js,tsx,jsx}'",
     "check:types": "tsc",
     "prepare": "husky install",
     "generate:graphql": "graphql-codegen --config codegen.yml"
@@ -35,7 +35,8 @@
       "react-app",
       "react-app/jest",
       "plugin:prettier/recommended"
-    ]
+    ],
+    "ignorePatterns": ["generated-types.ts"]
   },
   "browserslist": {
     "production": [
