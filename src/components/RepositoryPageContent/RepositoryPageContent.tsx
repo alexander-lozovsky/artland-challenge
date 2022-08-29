@@ -5,6 +5,7 @@ import CreateIssueModal from '../CreateIssueModal';
 import { useGetRepositoryQuery, useCreateIssueMutation, GetRepositoryDocument } from '../../graphQL/generated-types';
 import styles from './repositoryPageContent.module.css';
 import Loader from '../Loader';
+import { ICreateIssuePayload } from '../../types';
 
 const RepositoryPageContent: FC = () => {
     const { userId, repositoryName } = useParams();
@@ -36,8 +37,7 @@ const RepositoryPageContent: FC = () => {
     const onModalOpen = () => setIsModalOpened(true);
     const onModalClose = () => setIsModalOpened(false);
 
-    // TODO remove any
-    const onCreateIssue = async ({ title, description }: any) => {
+    const onCreateIssue = async ({ title, description }: ICreateIssuePayload) => {
         await createIssue({ variables: { input: { repositoryId: id, title, body: description } } });
         // TODO show some message on success/failure
         onModalClose();

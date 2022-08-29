@@ -1,29 +1,23 @@
-import { FC, FormEvent, useMemo } from 'react';
+import { FC, FormEvent, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import cn from 'classnames';
 import styles from './createIssueModal.module.css';
-
-interface CreateIssuePayload {
-    title: string;
-    description?: string;
-}
+import { ICreateIssuePayload } from '../../types';
 
 interface ICreateIssueModalProps {
     onClose: () => void;
-    onCreate: (payload: CreateIssuePayload) => void;
+    onCreate: (payload: ICreateIssuePayload) => void;
     isSubmitting?: boolean;
 }
 
 const CreateIssueModal: FC<ICreateIssueModalProps> = ({ onClose, onCreate, isSubmitting }) => {
     const modalRoot = useMemo(() => document.getElementById('modal-root'), []);
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
 
-    // TODO make unputs controllable and improve typing
     const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const formData = new FormData(e.target as HTMLFormElement);
-        const data = Object.fromEntries(formData.entries()) as unknown as CreateIssuePayload;
-
-        onCreate(data);
+        onCreate({ title, description });
     };
 
     const modal = (
@@ -31,12 +25,22 @@ const CreateIssueModal: FC<ICreateIssueModalProps> = ({ onClose, onCreate, isSub
             <div className={styles.content} onClick={(e) => e.stopPropagation()}>
                 <h1>Create New Issue</h1>
                 <form onSubmit={onFormSubmit}>
-                    <input className={styles.titleInput} type="text" name="title" placeholder="Title" required />
+                    <input
+                        className={styles.titleInput}
+                        type="text"
+                        name="title"
+                        placeholder="Title"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        required
+                    />
                     <textarea
                         className={styles.descriptionInput}
                         name="description"
                         rows={8}
                         placeholder="Description"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
                     />
                     <div className={styles.buttons}>
                         <button type="button" className={cn(styles.button, styles.cancelBtn)} onClick={onClose}>
