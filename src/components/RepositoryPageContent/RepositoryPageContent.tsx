@@ -6,6 +6,7 @@ import { useGetRepositoryQuery, useCreateIssueMutation, GetRepositoryDocument } 
 import styles from './repositoryPageContent.module.css';
 import Loader from '../Loader';
 import { ICreateIssuePayload } from '../../types';
+import { differenceInDays } from '../../utils';
 
 const RepositoryPageContent: FC = () => {
     const { userId, repositoryName } = useParams();
@@ -62,18 +63,16 @@ const RepositoryPageContent: FC = () => {
                 </div>
 
                 <ul className={styles.issuesList}>
-                    {issues.nodes.map((it) => {
-                        // TODO move to some helper function
-                        const createdAt = new Date(it.createdAt).getTime();
-                        const now = Date.now();
-
-                        const diffDays = Math.ceil((now - createdAt) / (1000 * 60 * 60 * 24));
+                    {issues.nodes.map(({ title, createdAt, number, author: { login } }) => {
+                        const createdAtDate = new Date(createdAt);
+                        const daysFromNow = differenceInDays(new Date(), createdAtDate);
 
                         return (
-                            <li key={it.title} className={styles.issue}>
-                                <h3 className={styles.issueTitle}>{it.title}</h3>
+                            <li key={title} className={styles.issue}>
+                                <h3 className={styles.issueTitle}>{title}</h3>
                                 <span className={styles.openedBy}>
-                                    #{it.number} opened {diffDays} days ago by {it.author.login}
+                                    #{number} opened{' '}
+                                    <span title={createdAtDate.toString()}>{daysFromNow} days ago</span> by {login}
                                 </span>
                             </li>
                         );
