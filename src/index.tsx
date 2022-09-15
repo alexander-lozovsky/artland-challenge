@@ -10,7 +10,21 @@ const client = new ApolloClient({
     headers: {
         authorization: `Bearer ${process.env.REACT_APP_GITHUB_ACCESS_TOKEN}`,
     },
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+        typePolicies: {
+            Query: {
+                fields: {
+                    search: {
+                        keyArgs: false,
+                        merge(existing, incoming = []) {
+                            const existingNodes = existing?.nodes || [];
+                            return { ...incoming, nodes: existingNodes.concat(incoming.nodes) };
+                        },
+                    },
+                },
+            },
+        },
+    }),
 });
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);

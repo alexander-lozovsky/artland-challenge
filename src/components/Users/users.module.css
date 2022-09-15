@@ -90,3 +90,7 @@
 .userStats {
     color: rgb(232, 228, 228)
 }
+
+.moreUsersLoader {
+    height: 100%;    
+}

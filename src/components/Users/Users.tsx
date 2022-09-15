@@ -5,6 +5,7 @@ import { useGetUsersQuery } from '../../graphQL/generated-types';
 import styles from './users.module.css';
 import cn from 'classnames';
 import Loader from '../Loader';
+import { NetworkStatus } from '@apollo/client';
 
 interface IUsersProps {
     query: string;
@@ -12,11 +13,14 @@ interface IUsersProps {
 
 const Users: FC<IUsersProps> = ({ query }) => {
     // TODO add lazy-loading
-    const { data, loading, error } = useGetUsersQuery({ variables: { query: `${query} type:user`, first: 20 } });
+    const { data, error, fetchMore, networkStatus } = useGetUsersQuery({
+        variables: { query: `${query} type:user`, first: 10 },
+        notifyOnNetworkStatusChange: true,
+    });
     const [searchParams, setSearchParams] = useSearchParams();
     const selectedUser = searchParams.get('selectedUser');
 
-    if (loading) {
+    if (networkStatus === NetworkStatus.loading) {
         return <Loader className={styles.loader} />;
     }
 
@@ -24,17 +28,23 @@ const Users: FC<IUsersProps> = ({ query }) => {
         return <p className={styles.errorMessage}>Cannot retrieve users, please try again</p>;
     }
 
-    const usersNodes = data.search.nodes;
+    const { nodes, userCount, pageInfo } = data.search;
+
+    const onNextClick = () => {
+        if (pageInfo.hasNextPage) {
+            fetchMore({ variables: { query: `${query} type:user`, first: 10, afterCursor: pageInfo.endCursor } });
+        }
+    };
 
     return (
         <div className={styles.container}>
-            <h2 className={styles.searchResultsTitle}>Results</h2>
-            {usersNodes.length === 0 && <p className={styles.noResultsNessage}>We couldn't find any users</p>}
-            {usersNodes.length > 0 && (
+            <h2 className={styles.searchResultsTitle}>Results: {userCount} users</h2>
+            {nodes.length === 0 && <p className={styles.noResultsNessage}>We couldn't find any users</p>}
+            {nodes.length > 0 && (
                 <div className={styles.usersListWrapper}>
                     <h3 className={styles.usersListTitle}>Users</h3>
                     <ul className={styles.usersList}>
-                        {usersNodes.map((node) => {
+                        {nodes.map((node) => {
                             switch (node.__typename) {
                                 case 'User': {
                                     const { login, name, repositories, starredRepositories } = node;
@@ -69,7 +79,16 @@ const Users: FC<IUsersProps> = ({ query }) => {
                                     return null;
                             }
                         })}
+                        {/* TODO consider refactoring */}
+                        {networkStatus === NetworkStatus.fetchMore && (
+                            <li key="loader" className={styles.userCard}>
+                                <Loader className={styles.moreUsersLoader} />
+                            </li>
+                        )}
                     </ul>
+                    <button type="button" onClick={onNextClick} disabled={networkStatus === NetworkStatus.fetchMore}>
+                        next
+                    </button>
                 </div>
             )}
             {selectedUser && (

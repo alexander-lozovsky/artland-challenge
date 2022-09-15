@@ -36,7 +36,9 @@
       "react-app/jest",
       "plugin:prettier/recommended"
     ],
-    "ignorePatterns": ["generated-types.ts"]
+    "ignorePatterns": [
+      "generated-types.ts"
+    ]
   },
   "browserslist": {
     "production": [
@@ -52,13 +54,13 @@
   },
   "devDependencies": {
     "@graphql-codegen/cli": "2.11.8",
+    "@graphql-codegen/introspection": "2.2.1",
+    "@graphql-codegen/typescript": "2.7.3",
+    "@graphql-codegen/typescript-operations": "2.5.3",
+    "@graphql-codegen/typescript-react-apollo": "3.3.3",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
     "husky": "^8.0.1",
-    "prettier": "^2.7.1",
-    "@graphql-codegen/typescript-operations": "2.5.3",
-    "@graphql-codegen/typescript-react-apollo": "3.3.3",
-    "@graphql-codegen/typescript": "2.7.3",
-    "@graphql-codegen/introspection": "2.2.1"
+    "prettier": "^2.7.1"
   }
 }
