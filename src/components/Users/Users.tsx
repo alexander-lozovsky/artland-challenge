@@ -2,14 +2,23 @@ import { FC } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Repositories from '../Repositories';
 import { useGetUsersQuery } from '../../graphQL/generated-types';
-import styles from './users.module.css';
-import cn from 'classnames';
 import Loader from '../Loader';
 import { NetworkStatus } from '@apollo/client';
 
 interface IUsersProps {
     query: string;
 }
+
+// TODO add active state styles
+// .userCardButton.active::after {
+//     display: block;
+//     content: '';
+//     width: 200px;
+//     height: 2px;
+//     position: absolute;
+//     bottom: -20px;
+//     background: blue;
+// }
 
 const Users: FC<IUsersProps> = ({ query }) => {
     // TODO add lazy-loading
@@ -21,11 +30,11 @@ const Users: FC<IUsersProps> = ({ query }) => {
     const selectedUser = searchParams.get('selectedUser');
 
     if (networkStatus === NetworkStatus.loading) {
-        return <Loader className={styles.loader} />;
+        return <Loader className="h-40" />;
     }
 
     if (error) {
-        return <p className={styles.errorMessage}>Cannot retrieve users, please try again</p>;
+        return <p className="text-rose-600 text-center mt-5">Cannot retrieve users, please try again</p>;
     }
 
     const { nodes, userCount, pageInfo } = data.search;
@@ -37,13 +46,12 @@ const Users: FC<IUsersProps> = ({ query }) => {
     };
 
     return (
-        <div className={styles.container}>
-            <h2 className={styles.searchResultsTitle}>Results: {userCount} users</h2>
-            {nodes.length === 0 && <p className={styles.noResultsNessage}>We couldn't find any users</p>}
+        <div className="w-[1200px] mx-auto">
+            <h2 className="my-5 text-xl text-center text-slate-500">Results: {userCount} users</h2>
+            {nodes.length === 0 && <p className="text-center">We couldn't find any users</p>}
             {nodes.length > 0 && (
-                <div className={styles.usersListWrapper}>
-                    <h3 className={styles.usersListTitle}>Users</h3>
-                    <ul className={styles.usersList}>
+                <div>
+                    <ul className="flex gap-2 overflow-y-scroll pb-6">
                         {nodes.map((node) => {
                             switch (node.__typename) {
                                 case 'User': {
@@ -57,16 +65,16 @@ const Users: FC<IUsersProps> = ({ query }) => {
                                     };
 
                                     return (
-                                        <li key={login} className={styles.userCard}>
+                                        <li key={login}>
                                             <button
                                                 type="button"
                                                 onClick={onUserSelect}
-                                                className={cn(styles.userCardButton, {
-                                                    [styles.active]: selectedUser === login,
-                                                })}
+                                                className="group bg-black text-white rounded-2xl w-72 h-40 hover:bg-blue-800 hover:bg-[url('../public/Octocat.png')] hover:bg-contain hover:bg-no-repeat hover:bg-center"
                                             >
-                                                <h4 className={styles.userName}>{name || login}</h4>
-                                                <span className={styles.userStats}>
+                                                <h4 className="text-xl font-bold group-hover:invisible">
+                                                    {name || login}
+                                                </h4>
+                                                <span className="text-gray-100 group-hover:invisible">
                                                     {repositories.totalCount} Repositories •{' '}
                                                     {starredRepositories.totalCount} Stars
                                                 </span>
@@ -81,8 +89,8 @@ const Users: FC<IUsersProps> = ({ query }) => {
                         })}
                         {/* TODO consider refactoring */}
                         {networkStatus === NetworkStatus.fetchMore && (
-                            <li key="loader" className={styles.userCard}>
-                                <Loader className={styles.moreUsersLoader} />
+                            <li key="loader" className="self-center">
+                                <Loader />
                             </li>
                         )}
                     </ul>
