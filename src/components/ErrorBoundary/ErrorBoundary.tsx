@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './errorBoundary.module.css';
 
 interface IErrorBoundaryProps {
     children: React.ReactElement;
@@ -22,7 +21,7 @@ class ErrorBoundary extends React.Component<IErrorBoundaryProps, IErrorBoundaryS
     render() {
         if (this.state.hasError) {
             return (
-                <div className={styles.wrapper}>
+                <div className="text-center">
                     <h1>
                         Something went wrong, please go to the <a href="/">home page</a> and start again
                     </h1>
