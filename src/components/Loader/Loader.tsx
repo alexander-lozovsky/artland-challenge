@@ -1,6 +1,5 @@
 import cn from 'classnames';
 import { FC } from 'react';
-import styles from './loader.module.css';
 
 interface ILoaderProps {
     className?: string;
@@ -8,7 +7,7 @@ interface ILoaderProps {
 
 const Loader: FC<ILoaderProps> = ({ className }) => {
     return (
-        <div className={styles.wrapper}>
+        <div className="flex justify-center items-center">
             <svg
                 version="1.1"
                 id="L9"
@@ -16,7 +15,7 @@ const Loader: FC<ILoaderProps> = ({ className }) => {
                 x="0px"
                 y="0px"
                 viewBox="0 0 100 100"
-                className={cn(styles.spinner, className)}
+                className={cn('w-24 h-24', className)}
             >
                 <path
                     fill="#000"
