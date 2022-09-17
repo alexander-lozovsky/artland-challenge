@@ -1,6 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import styles from './searchbox.module.css';
 
 const Searchbox = () => {
     const [searchParams] = useSearchParams();
@@ -16,15 +15,15 @@ const Searchbox = () => {
 
     return (
         <div>
-            <form onSubmit={onSubmit} className={styles.form}>
+            <form onSubmit={onSubmit} className="flex justify-center gap-4">
                 <input
                     type="search"
                     placeholder="Search users..."
                     value={searchQuery}
                     onChange={onChange}
-                    className={styles.input}
+                    className="w-64 p-3 text-xl border-solid border-2 border-indigo-600 rounded-lg"
                 />
-                <button type="submit" className={styles.searchBtn}>
+                <button type="submit" className="px-10 bg-indigo-600 text-white text-xl rounded-lg">
                     Search
                 </button>
             </form>
