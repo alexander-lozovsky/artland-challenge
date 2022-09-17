@@ -1,11 +1,10 @@
 import { FC } from 'react';
-import styles from './notFoundPage.module.css';
 
 const NotFoundPage: FC = () => {
     return (
-        <div className={styles.wrapper}>
-            <h1 className={styles.title}>404</h1>
-            <p className={styles.message}>Page not found</p>
+        <div className="text-center absolute w-screen h-screen flex flex-col justify-center">
+            <h1 className="text-8xl">404</h1>
+            <p className="text-4xl pt-6">Page not found</p>
         </div>
     );
 };
