@@ -3,7 +3,6 @@ import { useSearchParams } from 'react-router-dom';
 import Repositories from '../Repositories';
 import { useGetUsersQuery } from '../../graphQL/generated-types';
 import Loader from '../Loader';
-import { NetworkStatus } from '@apollo/client';
 
 interface IUsersProps {
     query: string;
@@ -11,14 +10,13 @@ interface IUsersProps {
 
 const Users: FC<IUsersProps> = ({ query }) => {
     // TODO add lazy-loading
-    const { data, error, fetchMore, networkStatus } = useGetUsersQuery({
+    const { data, error, loading } = useGetUsersQuery({
         variables: { query: `${query} type:user`, first: 10 },
-        notifyOnNetworkStatusChange: true,
     });
     const [searchParams, setSearchParams] = useSearchParams();
     const selectedUser = searchParams.get('selectedUser');
 
-    if (networkStatus === NetworkStatus.loading) {
+    if (loading) {
         return <Loader className="h-40" />;
     }
 
@@ -26,13 +24,7 @@ const Users: FC<IUsersProps> = ({ query }) => {
         return <p className="text-rose-600 text-center mt-5">Cannot retrieve users, please try again</p>;
     }
 
-    const { nodes, userCount, pageInfo } = data.search;
-
-    const onNextClick = () => {
-        if (pageInfo.hasNextPage) {
-            fetchMore({ variables: { query: `${query} type:user`, first: 10, afterCursor: pageInfo.endCursor } });
-        }
-    };
+    const { nodes, userCount } = data.search;
 
     return (
         <div className="w-[1200px] mx-auto">
@@ -80,16 +72,12 @@ const Users: FC<IUsersProps> = ({ query }) => {
                                     return null;
                             }
                         })}
-                        {/* TODO consider refactoring */}
-                        {networkStatus === NetworkStatus.fetchMore && (
+                        {loading && (
                             <li key="loader" className="self-center">
                                 <Loader />
                             </li>
                         )}
                     </ul>
-                    <button type="button" onClick={onNextClick} disabled={networkStatus === NetworkStatus.fetchMore}>
-                        next
-                    </button>
                 </div>
             )}
             {selectedUser && (
