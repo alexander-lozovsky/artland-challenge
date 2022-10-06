@@ -1,11 +1,10 @@
 import { FC } from 'react';
 import Searchbox from '../Searchbox';
-import styles from './repositoryPage.module.css';
 import RepositoryPageContent from '../RepositoryPageContent';
 
 const RepositoryPage: FC = () => {
     return (
-        <div className={styles.wrapper}>
+        <div className="w-[1200px] mx-auto pt-32">
             <Searchbox />
             <RepositoryPageContent />
         </div>

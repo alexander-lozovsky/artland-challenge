@@ -9,17 +9,6 @@ interface IUsersProps {
     query: string;
 }
 
-// TODO add active state styles
-// .userCardButton.active::after {
-//     display: block;
-//     content: '';
-//     width: 200px;
-//     height: 2px;
-//     position: absolute;
-//     bottom: -20px;
-//     background: blue;
-// }
-
 const Users: FC<IUsersProps> = ({ query }) => {
     // TODO add lazy-loading
     const { data, error, fetchMore, networkStatus } = useGetUsersQuery({
@@ -56,6 +45,7 @@ const Users: FC<IUsersProps> = ({ query }) => {
                             switch (node.__typename) {
                                 case 'User': {
                                     const { login, name, repositories, starredRepositories } = node;
+                                    const isActive = selectedUser === login;
 
                                     const onUserSelect = () => {
                                         setSearchParams({
@@ -64,8 +54,11 @@ const Users: FC<IUsersProps> = ({ query }) => {
                                         });
                                     };
 
+                                    const activeClasses =
+                                        "after:content-[''] after:block after:w-64 after:h-0.5 after:bg-blue-800 after:absolute after:bottom-[-20px] after:left-1/2 after:-translate-x-1/2";
+
                                     return (
-                                        <li key={login}>
+                                        <li key={login} className={`relative ${isActive ? activeClasses : ''}`}>
                                             <button
                                                 type="button"
                                                 onClick={onUserSelect}

@@ -2,7 +2,6 @@ import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { useGetUserRepositoriesQuery } from '../../graphQL/generated-types';
 import Loader from '../Loader';
-import styles from './repositories.module.css';
 
 interface IRepositoriesProps {
     login: string;
@@ -18,22 +17,25 @@ const Repositories: FC<IRepositoriesProps> = ({ login }) => {
     }
 
     if (error) {
-        return <div className={styles.errorMessage}>Cannot retrieve repositories</div>;
+        return <div className="text-rose-600">Cannot retrieve repositories</div>;
     }
 
     const items = data.user.repositories.nodes;
 
     return (
         <div>
-            <h3>{login} repositories</h3>
-            {items.length === 0 && <p>User has no repositories yet</p>}
+            <h3 className="my-5 font-bold text-2xl">{login} repositories</h3>
+            {items.length === 0 && <p className="my-5">User has no repositories yet</p>}
             {items.length > 0 && (
-                <ul className={styles.repositoriesList}>
+                <ul>
                     {items.map((it) => (
-                        <li key={it.id} className={styles.repository}>
-                            <Link to={`users/${login}/repositories/${it.name}`}>
-                                <span className={styles.repositoryName}>{it.name}</span>
-                                <span className={styles.repositoryStats}>
+                        <li key={it.id}>
+                            <Link
+                                to={`users/${login}/repositories/${it.name}`}
+                                className="flex w-full justify-between items-center py-2 px-1 hover:bg-zinc-300"
+                            >
+                                <span className="text-xl">{it.name}</span>
+                                <span className="text-slate-500">
                                     {it.stargazerCount} Stars • {it.watchers.totalCount} Watching
                                 </span>
                             </Link>
