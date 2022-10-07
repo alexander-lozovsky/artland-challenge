@@ -17,7 +17,7 @@ const Repositories: FC<IRepositoriesProps> = ({ login }) => {
     }
 
     if (error) {
-        return <div className="text-rose-600">Cannot retrieve repositories</div>;
+        return <div className="text-error">Cannot retrieve repositories</div>;
     }
 
     const items = data.user.repositories.nodes;
@@ -32,10 +32,10 @@ const Repositories: FC<IRepositoriesProps> = ({ login }) => {
                         <li key={it.id}>
                             <Link
                                 to={`users/${login}/repositories/${it.name}`}
-                                className="flex w-full justify-between items-center py-2 px-1 hover:bg-zinc-300"
+                                className="flex w-full justify-between items-center py-2 px-1 hover:bg-gray2"
                             >
                                 <span className="text-xl">{it.name}</span>
-                                <span className="text-slate-500">
+                                <span className="text-gray1">
                                     {it.stargazerCount} Stars • {it.watchers.totalCount} Watching
                                 </span>
                             </Link>

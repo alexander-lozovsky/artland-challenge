@@ -21,14 +21,14 @@ const Users: FC<IUsersProps> = ({ query }) => {
     }
 
     if (error) {
-        return <p className="text-rose-600 text-center mt-5">Cannot retrieve users, please try again</p>;
+        return <p className="text-error text-center mt-5">Cannot retrieve users, please try again</p>;
     }
 
     const { nodes, userCount } = data.search;
 
     return (
-        <div className="w-[1200px] mx-auto">
-            <h2 className="my-5 text-xl text-center text-slate-500">Results: {userCount} users</h2>
+        <div className="w-container mx-auto">
+            <h2 className="my-5 text-xl text-center text-gray1">Results: {userCount} users</h2>
             {nodes.length === 0 && <p className="text-center">We couldn't find any users</p>}
             {nodes.length > 0 && (
                 <div>
@@ -47,19 +47,19 @@ const Users: FC<IUsersProps> = ({ query }) => {
                                     };
 
                                     const activeClasses =
-                                        "after:content-[''] after:block after:w-64 after:h-0.5 after:bg-blue-800 after:absolute after:bottom-[-20px] after:left-1/2 after:-translate-x-1/2";
+                                        "after:content-[''] after:block after:w-64 after:h-0.5 after:bg-primary after:absolute after:bottom-[-20px] after:left-1/2 after:-translate-x-1/2";
 
                                     return (
                                         <li key={login} className={`relative ${isActive ? activeClasses : ''}`}>
                                             <button
                                                 type="button"
                                                 onClick={onUserSelect}
-                                                className="group bg-black text-white rounded-2xl w-72 h-40 hover:bg-blue-800 hover:bg-[url('../public/Octocat.png')] hover:bg-contain hover:bg-no-repeat hover:bg-center"
+                                                className="group bg-black text-white rounded-2xl w-72 h-40 hover:bg-primary hover:bg-[url('../public/Octocat.png')] hover:bg-contain hover:bg-no-repeat hover:bg-center"
                                             >
                                                 <h4 className="text-xl font-bold group-hover:invisible">
                                                     {name || login}
                                                 </h4>
-                                                <span className="text-gray-100 group-hover:invisible">
+                                                <span className="group-hover:invisible">
                                                     {repositories.totalCount} Repositories •{' '}
                                                     {starredRepositories.totalCount} Stars
                                                 </span>

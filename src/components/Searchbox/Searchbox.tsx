@@ -21,9 +21,9 @@ const Searchbox = () => {
                     placeholder="Search users..."
                     value={searchQuery}
                     onChange={onChange}
-                    className="w-64 p-3 text-xl border-solid border-2 border-indigo-600 rounded-lg"
+                    className="w-64 p-3 text-xl border-solid border-2 border-primary rounded-lg"
                 />
-                <button type="submit" className="px-10 bg-indigo-600 text-white text-xl rounded-lg">
+                <button type="submit" className="px-10 bg-primary text-white text-xl rounded-lg">
                     Search
                 </button>
             </form>

@@ -19,7 +19,7 @@ const RepositoryPageContent: FC = () => {
     }
 
     if (error) {
-        return <p className="text-rose-600 text-center mt-40">Cannot retrieve repository</p>;
+        return <p className="text-error text-center mt-40">Cannot retrieve repository</p>;
     }
 
     const {
@@ -44,7 +44,7 @@ const RepositoryPageContent: FC = () => {
             <div>
                 <div className="flex justify-between mt-12 mb-3">
                     <h2 className="font-bold text-xl">Open issues</h2>
-                    <button type="button" className="text-lg px-12 py-1 bg-green-400" onClick={onModalOpen}>
+                    <button type="button" className="text-lg px-12 py-1 bg-success" onClick={onModalOpen}>
                         Create issue
                     </button>
                 </div>
@@ -59,7 +59,7 @@ const RepositoryPageContent: FC = () => {
                             return (
                                 <li key={id} className="px-1 py-4 border-t last:border-b">
                                     <h3 className="mb-1 font-bold text-lg">{title}</h3>
-                                    <span className="text-slate-500 text-sm">
+                                    <span className="text-gray1 text-sm">
                                         #{number} opened{' '}
                                         <span title={createdAtDate.toString()}>{daysFromNow} days ago</span> by {login}
                                     </span>

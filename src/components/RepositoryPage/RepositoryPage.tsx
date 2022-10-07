@@ -4,7 +4,7 @@ import RepositoryPageContent from '../RepositoryPageContent';
 
 const RepositoryPage: FC = () => {
     return (
-        <div className="w-[1200px] mx-auto pt-32">
+        <div className="w-container mx-auto pt-32">
             <Searchbox />
             <RepositoryPageContent />
         </div>

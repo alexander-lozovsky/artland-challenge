@@ -23,13 +23,13 @@ const CreateIssueModal: FC<ICreateIssueModalProps> = ({ onClose, repositoryId })
 
     const modal = (
         <div
-            className="fixed flex items-center justify-center w-screen h-screen top-0 left-0 bg-black/25"
+            className="fixed flex items-center justify-center w-screen h-screen top-0 left-0 bg-overlay"
             onClick={onClose}
         >
             <div className="w-[600px] bg-white py-3 px-8" onClick={(e) => e.stopPropagation()}>
                 <div>
                     <h1 className="font-bold text-2xl">Create New Issue</h1>
-                    {!!error && <p className="text-rose-600">Cannot create issue, please try again</p>}
+                    {!!error && <p className="text-error">Cannot create issue, please try again</p>}
                 </div>
                 <form onSubmit={onFormSubmit}>
                     <input
@@ -50,10 +50,10 @@ const CreateIssueModal: FC<ICreateIssueModalProps> = ({ onClose, repositoryId })
                         onChange={(e) => setDescription(e.target.value)}
                     />
                     <div className="text-right mt-12">
-                        <button type="button" className="text-base px-4 py-2 bg-rose-400 mr-2" onClick={onClose}>
+                        <button type="button" className="text-base px-4 py-2 bg-error mr-2" onClick={onClose}>
                             Cancel
                         </button>
-                        <button type="submit" className="text-base px-4 py-2 bg-green-400" disabled={loading}>
+                        <button type="submit" className="text-base px-4 py-2 bg-success" disabled={loading}>
                             Create
                         </button>
                     </div>
