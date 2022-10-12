@@ -38,45 +38,42 @@ const Repository: FC = () => {
 
     return (
         <div className="w-container mx-auto">
+            <div className="mt-24 flex justify-between items-center">
+                <h1 className="text-5xl">{name}</h1>
+                <span className="text-xl">
+                    {stargazerCount} Stars • {totalCount} Watching
+                </span>
+            </div>
             <div>
-                <div className="mt-24 flex justify-between items-center">
-                    <h1 className="text-5xl">{name}</h1>
-                    <span className="text-xl">
-                        {stargazerCount} Stars • {totalCount} Watching
-                    </span>
+                <div className="flex justify-between mt-12 mb-3">
+                    <h2 className="font-bold text-xl">Open issues</h2>
+                    <Form action="new-issue">
+                        <button type="submit" className="text-lg px-12 py-1 bg-success">
+                            Create issue
+                        </button>
+                    </Form>
                 </div>
-                <div>
-                    <div className="flex justify-between mt-12 mb-3">
-                        <h2 className="font-bold text-xl">Open issues</h2>
-                        <Form action="new-issue">
-                            <button type="submit" className="text-lg px-12 py-1 bg-success">
-                                Create issue
-                            </button>
-                        </Form>
-                    </div>
 
-                    {issues.nodes.length === 0 && <p>No issues have been opened</p>}
-                    {issues.nodes.length > 0 && (
-                        <ul>
-                            {issues.nodes.map(({ id, title, createdAt, number, author: { login } }) => {
-                                const createdAtDate = new Date(createdAt);
-                                const daysFromNow = differenceInDays(new Date(), createdAtDate);
+                {issues.nodes.length === 0 && <p>No issues have been opened</p>}
+                {issues.nodes.length > 0 && (
+                    <ul>
+                        {issues.nodes.map(({ id, title, createdAt, number, author: { login } }) => {
+                            const createdAtDate = new Date(createdAt);
+                            const daysFromNow = differenceInDays(new Date(), createdAtDate);
 
-                                return (
-                                    <li key={id} className="px-1 py-4 border-t last:border-b">
-                                        <h3 className="mb-1 font-bold text-lg">{title}</h3>
-                                        <span className="text-gray1 text-sm">
-                                            #{number} opened{' '}
-                                            <span title={createdAtDate.toString()}>{daysFromNow} days ago</span> by{' '}
-                                            {login}
-                                        </span>
-                                    </li>
-                                );
-                            })}
-                        </ul>
-                    )}
-                    <Outlet context={{ repositoryId: id }} />
-                </div>
+                            return (
+                                <li key={id} className="px-1 py-4 border-t last:border-b">
+                                    <h3 className="mb-1 font-bold text-lg">{title}</h3>
+                                    <span className="text-gray1 text-sm">
+                                        #{number} opened{' '}
+                                        <span title={createdAtDate.toString()}>{daysFromNow} days ago</span> by {login}
+                                    </span>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                )}
+                <Outlet context={{ repositoryId: id }} />
             </div>
         </div>
     );

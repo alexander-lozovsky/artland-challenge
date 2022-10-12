@@ -5,7 +5,7 @@ import { ApolloProvider } from '@apollo/client';
 import graphqlClient from './graphQL/client';
 
 import Root from './routes/root';
-import Search from './routes/search';
+import Search, { loader as searchLoader } from './routes/search';
 import Repository, { loader as repositoryLoader } from './routes/repository';
 import NewIssue, { action as newIssueAction } from './routes/newIssue';
 
@@ -19,7 +19,7 @@ const router = createBrowserRouter([
         path: '/',
         element: <Root />,
         children: [
-            { path: 'search', element: <Search /> },
+            { path: 'search', element: <Search />, loader: searchLoader },
             {
                 path: '/users/:userId/repositories/:repositoryName',
                 element: <Repository />,
