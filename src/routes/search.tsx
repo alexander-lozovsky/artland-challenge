@@ -1,19 +1,17 @@
 import { FC } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import Repositories from '../Repositories';
-import { useGetUsersQuery } from '../../graphQL/generated-types';
-import Loader from '../Loader';
+import Repositories from '../components/Repositories';
+import { useGetUsersQuery } from '../graphQL/generated-types';
+import Loader from '../components/Loader';
 
-interface IUsersProps {
-    query: string;
-}
-
-const Users: FC<IUsersProps> = ({ query }) => {
+const Search: FC = () => {
     // TODO add lazy-loading
+    const [searchParams, setSearchParams] = useSearchParams();
+    const query = searchParams.get('query');
     const { data, error, loading } = useGetUsersQuery({
         variables: { query: `${query} type:user`, first: 10 },
     });
-    const [searchParams, setSearchParams] = useSearchParams();
+
     const selectedUser = searchParams.get('selectedUser');
 
     if (loading) {
@@ -90,4 +88,4 @@ const Users: FC<IUsersProps> = ({ query }) => {
     );
 };
 
-export default Users;
+export default Search;

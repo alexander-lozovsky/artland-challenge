@@ -2,7 +2,6 @@ import { FC } from 'react';
 import { ApolloQueryResult } from '@apollo/client';
 import { LoaderFunction, useLoaderData, Form, Outlet } from 'react-router-dom';
 import graphqlClient from '../graphQL/client';
-import Searchbox from '../components/Searchbox';
 import { GetRepositoryDocument, GetRepositoryQuery } from '../graphQL/generated-types';
 import { differenceInDays } from '../utils';
 
@@ -38,8 +37,7 @@ const Repository: FC = () => {
     } = result.data.repository;
 
     return (
-        <div className="w-container mx-auto pt-32">
-            <Searchbox />
+        <div className="w-container mx-auto">
             <div>
                 <div className="mt-24 flex justify-between items-center">
                     <h1 className="text-5xl">{name}</h1>

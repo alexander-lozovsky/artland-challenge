@@ -1,23 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import graphqlClient from './graphQL/client';
-import { ApolloProvider } from '@apollo/client';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { ApolloProvider } from '@apollo/client';
+import graphqlClient from './graphQL/client';
+
 import Root from './routes/root';
+import Search from './routes/search';
 import Repository, { loader as repositoryLoader } from './routes/repository';
 import NewIssue, { action as newIssueAction } from './routes/newIssue';
+
 import NotFoundPage from './components/NotFoundPage';
 import ErrorBoundary from './components/ErrorBoundary';
 
 import './index.css';
 
 const router = createBrowserRouter([
-    { path: '/', element: <Root /> },
     {
-        path: '/users/:userId/repositories/:repositoryName',
-        element: <Repository />,
-        loader: repositoryLoader,
-        children: [{ path: 'new-issue', element: <NewIssue />, action: newIssueAction }],
+        path: '/',
+        element: <Root />,
+        children: [
+            { path: 'search', element: <Search /> },
+            {
+                path: '/users/:userId/repositories/:repositoryName',
+                element: <Repository />,
+                loader: repositoryLoader,
+                children: [{ path: 'new-issue', element: <NewIssue />, action: newIssueAction }],
+            },
+        ],
     },
     { path: '*', element: <NotFoundPage /> },
 ]);

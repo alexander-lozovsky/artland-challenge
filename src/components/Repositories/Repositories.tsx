@@ -31,7 +31,7 @@ const Repositories: FC<IRepositoriesProps> = ({ login }) => {
                     {items.map((it) => (
                         <li key={it.id}>
                             <Link
-                                to={`users/${login}/repositories/${it.name}`}
+                                to={`/users/${login}/repositories/${it.name}`}
                                 className="flex w-full justify-between items-center py-2 px-1 hover:bg-gray2"
                             >
                                 <span className="text-xl">{it.name}</span>
