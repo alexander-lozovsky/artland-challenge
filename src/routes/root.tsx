@@ -1,9 +1,9 @@
 import { FC } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import Users from '../Users';
-import Searchbox from '../Searchbox';
+import Users from '../components/Users';
+import Searchbox from '../components/Searchbox';
 
-const HomePage: FC = () => {
+const Root: FC = () => {
     const [searchParams] = useSearchParams();
     const query = searchParams.get('query');
 
@@ -15,4 +15,4 @@ const HomePage: FC = () => {
     );
 };
 
-export default HomePage;
+export default Root;

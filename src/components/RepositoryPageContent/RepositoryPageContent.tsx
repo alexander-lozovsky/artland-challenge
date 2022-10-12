@@ -1,24 +1,15 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 
-import { useParams } from 'react-router-dom';
-import CreateIssueModal from '../CreateIssueModal';
-import { useGetRepositoryQuery } from '../../graphQL/generated-types';
-import Loader from '../Loader';
+import { useLoaderData, Form, Outlet } from 'react-router-dom';
+import { GetRepositoryQuery } from '../../graphQL/generated-types';
 import { differenceInDays } from '../../utils';
+import { ApolloQueryResult } from '@apollo/client';
 
 const RepositoryPageContent: FC = () => {
-    const { userId, repositoryName } = useParams();
-    const [isModalOpened, setIsModalOpened] = useState(false);
     // TODO add pagination
-    const { data, loading, error } = useGetRepositoryQuery({
-        variables: { name: repositoryName, owner: userId, first: 10 },
-    });
+    const result = useLoaderData() as ApolloQueryResult<GetRepositoryQuery>;
 
-    if (loading) {
-        return <Loader className="h-80" />;
-    }
-
-    if (error) {
+    if (result.error) {
         return <p className="text-error text-center mt-40">Cannot retrieve repository</p>;
     }
 
@@ -28,10 +19,7 @@ const RepositoryPageContent: FC = () => {
         issues,
         stargazerCount,
         watchers: { totalCount },
-    } = data.repository;
-
-    const onModalOpen = () => setIsModalOpened(true);
-    const onModalClose = () => setIsModalOpened(false);
+    } = result.data.repository;
 
     return (
         <div>
@@ -44,9 +32,11 @@ const RepositoryPageContent: FC = () => {
             <div>
                 <div className="flex justify-between mt-12 mb-3">
                     <h2 className="font-bold text-xl">Open issues</h2>
-                    <button type="button" className="text-lg px-12 py-1 bg-success" onClick={onModalOpen}>
-                        Create issue
-                    </button>
+                    <Form action="new-issue">
+                        <button type="submit" className="text-lg px-12 py-1 bg-success">
+                            Create issue
+                        </button>
+                    </Form>
                 </div>
 
                 {issues.nodes.length === 0 && <p>No issues have been opened</p>}
@@ -68,7 +58,7 @@ const RepositoryPageContent: FC = () => {
                         })}
                     </ul>
                 )}
-                {isModalOpened && <CreateIssueModal onClose={onModalClose} repositoryId={id} />}
+                <Outlet context={{ repositoryId: id }} />
             </div>
         </div>
     );

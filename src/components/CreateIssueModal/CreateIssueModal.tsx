@@ -1,6 +1,6 @@
-import { FC, FormEvent, useMemo, useState } from 'react';
+import { FC, useMemo } from 'react';
 import { createPortal } from 'react-dom';
-import { GetRepositoryDocument, useCreateIssueMutation } from '../../graphQL/generated-types';
+import { Form, useActionData, useNavigation } from 'react-router-dom';
 
 interface ICreateIssueModalProps {
     onClose: () => void;
@@ -9,17 +9,9 @@ interface ICreateIssueModalProps {
 
 const CreateIssueModal: FC<ICreateIssueModalProps> = ({ onClose, repositoryId }) => {
     const modalRoot = useMemo(() => document.getElementById('modal-root'), []);
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-
-    const [createIssue, { loading, error }] = useCreateIssueMutation({ refetchQueries: [GetRepositoryDocument] });
-
-    const onFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        await createIssue({ variables: { input: { repositoryId: repositoryId, title, body: description } } });
-
-        onClose();
-    };
+    const error = useActionData();
+    const navigation = useNavigation();
+    const isSubmitting = navigation.state === 'submitting';
 
     const modal = (
         <div
@@ -31,14 +23,12 @@ const CreateIssueModal: FC<ICreateIssueModalProps> = ({ onClose, repositoryId })
                     <h1 className="font-bold text-2xl">Create New Issue</h1>
                     {!!error && <p className="text-error">Cannot create issue, please try again</p>}
                 </div>
-                <form onSubmit={onFormSubmit}>
+                <Form method="post">
                     <input
                         className="block w-full border mt-6 p-2"
                         type="text"
                         name="title"
                         placeholder="Title"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
                         required
                     />
                     <textarea
@@ -46,18 +36,18 @@ const CreateIssueModal: FC<ICreateIssueModalProps> = ({ onClose, repositoryId })
                         name="description"
                         rows={8}
                         placeholder="Description"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
                     />
+                    <input hidden type="text" defaultValue={repositoryId} name="repositoryId" />
+
                     <div className="text-right mt-12">
                         <button type="button" className="text-base px-4 py-2 bg-error mr-2" onClick={onClose}>
                             Cancel
                         </button>
-                        <button type="submit" className="text-base px-4 py-2 bg-success" disabled={loading}>
+                        <button type="submit" className="text-base px-4 py-2 bg-success" disabled={isSubmitting}>
                             Create
                         </button>
                     </div>
-                </form>
+                </Form>
             </div>
         </div>
     );
